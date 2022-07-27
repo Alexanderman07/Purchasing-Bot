@@ -1,5 +1,8 @@
 import requests
 import json
+from selenium import webdriver
+
+driver = webdriver.Chrome(executable_path='')
 
 def find_item(name):
     URL = ''
@@ -13,12 +16,18 @@ def find_item(name):
                 print(item['id'])
                 return item['id']
 
-def get_color(item_id, color):
+def get_color(item_id, color, size):
     URL = f'/{item_id}'
     html = requests.get(url=URL)
     output = json.loads(html.text)
-    print(output)
+
+    for product_color in output['styles']:
+        if color in product_color['name']:
+            for product_size in product_color['sizes']:
+                if size in product_size['name']:
+                    return product_color['id'] 
 
 if __name__ == '__main__':
     item_id = find_item('Logo Split')
-    get_color(item_id, 'Black')
+    color_id = get_color(item_id, 'Black', "Large")
+    print(color_id)
