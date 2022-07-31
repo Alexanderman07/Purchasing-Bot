@@ -7,11 +7,19 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 
-headers = {}
+headers = {'user-agent': 'Mozilla/5.0 (iphone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, '
+                         'like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'}
 
-mobile_emulator = {}
+mobile_emulator = {"deviceMetrics": {"width": 360, "height": 640, "pixelRatio": 3.0},
+                "UserAgent": "Mozilla/5.0 (iphone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) "
+                             "Version/13.0.3 Mobile/15E148 Safari/604.1"}
 
-prefs = {}
+prefs = {'disk-cache-size': 4096}
+
+options = Options()
+options.add_experimental_option("mobileEmulation", mobile_emulator)
+options.add_experimental_option('prefs', prefs)
+options.add_experimental_option("useAutomationExtension", False)
 
 driver = webdriver.Chrome(executable_path='')
 
