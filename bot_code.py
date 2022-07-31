@@ -1,3 +1,5 @@
+from itertools import product
+from h11 import PRODUCT_ID
 import requests
 import json
 from selenium import webdriver
@@ -21,7 +23,7 @@ options.add_experimental_option("mobileEmulation", mobile_emulator)
 options.add_experimental_option('prefs', prefs)
 options.add_experimental_option("useAutomationExtension", False)
 
-driver = webdriver.Chrome(executable_path='')
+driver = webdriver.Chrome(options = options, executable_path='')
 
 
 def find_item(name):
@@ -47,7 +49,11 @@ def get_color(item_id, color, size):
                 if size in product_size['name']:
                     return product_color['id'] 
 
+def get_product(item_id, color_id, size):
+    URL = '' + str(item_id) + '/' + str(color_id)
+    driver.get(URL)
+
 if __name__ == '__main__':
     item_id = find_item('Logo Split')
     color_id = get_color(item_id, 'Black', "Large")
-    print(color_id)
+    get_product(item_id, color_id, 'Large')
