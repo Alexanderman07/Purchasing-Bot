@@ -24,7 +24,7 @@ options.add_experimental_option('prefs', prefs)
 options.add_experimental_option("useAutomationExtension", False)
 
 driver = webdriver.Chrome(options = options, executable_path='')
-
+wait = WebDriverWait(driver, 10)
 
 def find_item(name):
     URL = ''
@@ -52,6 +52,19 @@ def get_color(item_id, color, size):
 def get_product(item_id, color_id, size):
     URL = '' + str(item_id) + '/' + str(color_id)
     driver.get(URL)
+    wait.until(EC.presence_of_all_elements_located((By.ID, 'size-opyioms')))
+
+    options = Select(driver.find_element_by_id('size-options'))
+    options.select_by_visible_text(size)
+
+    driver.find_element_by_xpath('').click()
+
+def checkout():
+    URL = ''
+    driver.get(URL)
+    wait.until(EC.presence_of_all_elements_located((By.ID, 'order_billing_name')))
+    driver.execute_script(f'document.getElementById("order_billing_name").value = "{}";')
+    driver.execute_script(f'document.getElementById("").value = "{}";')
 
 if __name__ == '__main__':
     item_id = find_item('Logo Split')
