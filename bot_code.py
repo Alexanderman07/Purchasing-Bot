@@ -64,7 +64,27 @@ def checkout():
     driver.get(URL)
     wait.until(EC.presence_of_all_elements_located((By.ID, 'order_billing_name')))
     driver.execute_script(f'document.getElementById("order_billing_name").value = "{}";')
-    driver.execute_script(f'document.getElementById("").value = "{}";')
+    driver.execute_script(f'document.getElementById("order_email").value = "{}";')
+    driver.execute_script(f'document.getElementById("order_tel").value = "{}";')
+    driver.execute_script(f'document.getElementById("order_billing_address").value = "{}";')
+    driver.execute_script(f'document.getElementById("order_billing_address_2").value = "{}";')
+    driver.execute_script(f'document.getElementById("order_billing_address_3").value = "{}";')
+    driver.execute_script(f'document.getElementById("order_billing_city").value = "{}";')
+    driver.execute_script(f'document.getElementById("order_billing_zip").value = "{}";')
+    driver.execute_script(f'document.getElementById("credit_card_number").value = "{}";')
+    driver.execute_script(f'document.getElementById("credit_card_cvv").value = "{}";')
+
+    card_type = Select(driver.find_element_by_id('credit_card_type'))
+    card_type.select_by_visible_text()
+    card_month = Select(driver.find_element_by_id('credit_card_month'))
+    card_month.select_by_value()
+    card_year = Select(driver.find_element_by_id('credit_card_year'))
+    card_year.select_by_value()
+
+    driver.find_element_by_id('order_terms').click()
+    driver.find_element_by_id('submit_button').click()
+
+
 
 if __name__ == '__main__':
     item_id = find_item('Logo Split')
