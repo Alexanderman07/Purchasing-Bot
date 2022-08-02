@@ -2,12 +2,16 @@ from itertools import product
 from h11 import PRODUCT_ID
 import requests
 import json
+import time
+
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
+
+from config import ProductDetails, UserDetails, PaymentDetails
 
 headers = {'user-agent': 'Mozilla/5.0 (iphone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, '
                          'like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'}
@@ -60,26 +64,27 @@ def get_product(item_id, color_id, size):
     driver.find_element_by_xpath('').click()
 
 def checkout():
+    time.sleep(0.5)
     URL = ''
     driver.get(URL)
     wait.until(EC.presence_of_all_elements_located((By.ID, 'order_billing_name')))
-    driver.execute_script(f'document.getElementById("order_billing_name").value = "{}";')
-    driver.execute_script(f'document.getElementById("order_email").value = "{}";')
-    driver.execute_script(f'document.getElementById("order_tel").value = "{}";')
-    driver.execute_script(f'document.getElementById("order_billing_address").value = "{}";')
-    driver.execute_script(f'document.getElementById("order_billing_address_2").value = "{}";')
-    driver.execute_script(f'document.getElementById("order_billing_address_3").value = "{}";')
-    driver.execute_script(f'document.getElementById("order_billing_city").value = "{}";')
-    driver.execute_script(f'document.getElementById("order_billing_zip").value = "{}";')
-    driver.execute_script(f'document.getElementById("credit_card_number").value = "{}";')
-    driver.execute_script(f'document.getElementById("credit_card_cvv").value = "{}";')
+    driver.execute_script(f'document.getElementById("order_billing_name").value = "{UserDetails.NAME}";')
+    driver.execute_script(f'document.getElementById("order_email").value = "{UserDetails.EMAIL}";')
+    driver.execute_script(f'document.getElementById("order_tel").value = "{UserDetails.TELE}";')
+    driver.execute_script(f'document.getElementById("order_billing_address").value = "{UserDetails.ADDRESS1}";')
+    driver.execute_script(f'document.getElementById("order_billing_address_2").value = "{UserDetails.ADDRESS2}";')
+    driver.execute_script(f'document.getElementById("order_billing_address_3").value = "{UserDetails.ADDRESS3}";')
+    driver.execute_script(f'document.getElementById("order_billing_city").value = "{UserDetails.CITY}";')
+    driver.execute_script(f'document.getElementById("order_billing_zip").value = "{UserDetails.ZIP}";')
+    driver.execute_script(f'document.getElementById("credit_card_number").value = "{PaymentDetails.CARD_NUMBER}";')
+    driver.execute_script(f'document.getElementById("credit_card_cvv").value = "{PaymentDetails.CVV}";')
 
     card_type = Select(driver.find_element_by_id('credit_card_type'))
-    card_type.select_by_visible_text()
+    card_type.select_by_visible_text(str(PaymentDetails.CARD_TYPE))
     card_month = Select(driver.find_element_by_id('credit_card_month'))
-    card_month.select_by_value()
+    card_month.select_by_value(str(PaymentDetails.MONTH))
     card_year = Select(driver.find_element_by_id('credit_card_year'))
-    card_year.select_by_value()
+    card_year.select_by_value(str(PaymentDetails.YEAR))
 
     driver.find_element_by_id('order_terms').click()
     driver.find_element_by_id('submit_button').click()
@@ -87,6 +92,9 @@ def checkout():
 
 
 if __name__ == '__main__':
-    item_id = find_item('Logo Split')
-    color_id = get_color(item_id, 'Black', "Large")
-    get_product(item_id, color_id, 'Large')
+    t0 = time.time()
+    item_id = find_item(ProductDetails.KEYWORDS)
+    color_id = get_color(item_id, ProductDetails.COLOR, ProductDetails.SIZE)
+    get_product(item_id, color_id, ProductDetails.SIZE)
+    checkout()
+    print('TIME: ', time.time()-t0)
