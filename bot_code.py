@@ -31,7 +31,7 @@ driver = webdriver.Chrome(options = options, executable_path='')
 wait = WebDriverWait(driver, 10)
 
 def find_item(name):
-    URL = ''
+    URL = 'https://www.supremenewyork.com/mobile_stock.json'
     html = requests.get(url=URL)
     term = json.loads(html.text)
     
