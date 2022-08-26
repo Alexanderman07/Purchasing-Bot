@@ -43,7 +43,7 @@ def find_item(name):
                 return item['id']
 
 def get_color(item_id, color, size):
-    URL = f'/{item_id}'
+    URL = f'https://www.supremenewyork.com/shop/{item_id}.json/'
     html = requests.get(url=URL)
     output = json.loads(html.text)
 
