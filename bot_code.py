@@ -54,9 +54,9 @@ def get_color(item_id, color, size):
                     return product_color['id'] 
 
 def get_product(item_id, color_id, size):
-    URL = '' + str(item_id) + '/' + str(color_id)
+    URL = 'https://www.supremenewyork.com/mobile/#products' + str(item_id) + '/' + str(color_id)
     driver.get(URL)
-    wait.until(EC.presence_of_all_elements_located((By.ID, 'size-opyioms')))
+    wait.until(EC.presence_of_element_located((By.ID, 'size-options')))
 
     options = Select(driver.find_element_by_id('size-options'))
     options.select_by_visible_text(size)
